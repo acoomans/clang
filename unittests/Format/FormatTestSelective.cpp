@@ -584,6 +584,20 @@ TEST_F(FormatTestSelective, StopFormattingWhenLeavingScope) {
              15, 0));
 }
 
+TEST_F(FormatTestSelective, StopFormattingWhenLeavingObjCScope) {
+    EXPECT_EQ("@protocol A\n"
+              " - (void)f;\n"
+              " - (void)g;\n"
+              "@end\n"
+              "MACRO",
+              format("@protocol A\n"
+                     " - (void)f;\n"
+                     "- (void)g;\n"  // Format here.
+                     "@end\n"
+                     "MACRO",
+                     25, 0));
+}
+
 TEST_F(FormatTestSelective, SelectivelyRequoteJavaScript) {
   Style = getGoogleStyle(FormatStyle::LK_JavaScript);
   EXPECT_EQ(

@@ -1042,6 +1042,10 @@ UnwrappedLineFormatter::format(const SmallVectorImpl<AnnotatedLine *> &Lines,
         (TheLine.Level == RangeMinLevel && !PreviousRBrace &&
          !TheLine.startsWith(tok::r_brace));
 
+    if (TheLine.First->Next && TheLine.First->Next->Tok.isObjCAtKeyword(tok::objc_end)) {
+      ContinueFormatting = false;
+    }
+
     bool FixIndentation = (FixBadIndentation || ContinueFormatting) &&
                           Indent != TheLine.First->OriginalColumn;
     bool ShouldFormat = TheLine.Affected || FixIndentation;
